@@ -48,17 +48,20 @@
     html {
       scroll-behavior: smooth;
       scroll-padding-top: 5.5rem;
+      overflow-x: clip;
+      overflow-y: scroll;
+      scrollbar-gutter: stable;
     }
     body {
       margin: 0;
-      min-height: 100dvh;
+      min-height: 100svh;
       background: var(--bg);
       color: var(--text);
       font-family: -apple-system, BlinkMacSystemFont, "SF Pro Display", Inter, sans-serif;
       font-size: 17px;
       line-height: 1.6;
       -webkit-font-smoothing: antialiased;
-      overflow-x: hidden;
+      overflow-x: clip;
     }
 
     .grain {
@@ -131,7 +134,7 @@
       white-space: nowrap;
       transition: transform 0.2s var(--ease-snappy), box-shadow 0.25s var(--ease-fluid);
     }
-    .live-badge:hover { transform: scale(1.02); }
+    .live-badge:hover { transform: none; }
     .live-badge:active { transform: scale(0.97); }
     .live-dot {
       width: 8px;
@@ -176,7 +179,6 @@
       transition: transform 0.2s var(--ease-snappy), background 0.25s var(--ease-fluid), box-shadow 0.25s var(--ease-fluid);
     }
     .btn:hover {
-      transform: scale(1.02);
       box-shadow: 0 8px 24px rgba(0, 0, 0, 0.28);
     }
     .btn:active { transform: scale(0.97); }
@@ -186,7 +188,7 @@
       border: 1px solid rgba(255, 255, 255, 0.22);
       box-shadow: 0 1px 0 rgba(255, 255, 255, 0.28) inset, 0 10px 22px rgba(0, 0, 0, 0.28);
     }
-    .btn-primary:hover { filter: brightness(1.04); transform: scale(1.02); }
+    .btn-primary:hover { filter: brightness(1.04); }
     .btn-ghost {
       background: transparent;
       color: var(--muted);
@@ -209,7 +211,6 @@
         0 0 24px rgba(126, 184, 201, 0.18);
     }
     .btn-hero:hover {
-      transform: scale(1.02);
       box-shadow:
         0 1px 0 rgba(255, 255, 255, 0.55) inset,
         0 14px 32px rgba(0, 0, 0, 0.4),
@@ -225,7 +226,7 @@
     .hero {
       position: relative;
       isolation: isolate;
-      min-height: calc(100dvh - 4.6rem);
+      min-height: calc(100svh - 4.6rem);
       display: grid;
       align-items: center;
       padding: 3.2rem 0 3.4rem;
@@ -393,10 +394,34 @@
     .ticker {
       position: relative;
       z-index: 2;
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
       overflow: hidden;
       border-block: 1px solid rgba(255, 255, 255, 0.08);
       background: rgba(12, 14, 16, 0.92);
-      padding: 0.85rem 0;
+      padding: 0.7rem 0;
+    }
+    .ticker-note {
+      flex: 0 0 auto;
+      z-index: 2;
+      margin: 0 0 0 0.85rem;
+      padding: 0.32rem 0.7rem;
+      border-radius: 999px;
+      border: 1px solid rgba(255, 255, 255, 0.12);
+      background: rgba(18, 18, 18, 0.92);
+      color: #C9D3D6;
+      font-size: 0.72rem;
+      font-weight: 700;
+      letter-spacing: 0.02em;
+      white-space: nowrap;
+    }
+    .ticker-mask {
+      flex: 1 1 auto;
+      min-width: 0;
+      overflow: hidden;
+      mask-image: linear-gradient(90deg, transparent, #000 12px, #000 calc(100% - 16px), transparent);
+      -webkit-mask-image: linear-gradient(90deg, transparent, #000 12px, #000 calc(100% - 16px), transparent);
     }
     .ticker-track {
       display: flex;
@@ -404,7 +429,6 @@
       gap: 2.4rem;
       animation: marquee 24s linear infinite;
     }
-    .ticker:hover .ticker-track { animation-play-state: paused; }
     .ticker-item {
       display: flex;
       align-items: baseline;
@@ -414,6 +438,7 @@
       font-weight: 700;
       letter-spacing: 0.03em;
     }
+    .ticker-item .px { min-width: 9ch; text-align: right; }
     .ticker-item .pair { color: #9FD4E0; }
     .ticker-item .px { color: var(--text); }
     .ticker-item .chg.up { color: #8FCB96; }
@@ -472,15 +497,15 @@
       -webkit-backdrop-filter: blur(20px);
       border: 1px solid rgba(255, 255, 255, 0.12);
       border-radius: 24px;
-      transition: transform 0.35s var(--ease-out), border-color 0.3s var(--ease-fluid), box-shadow 0.35s var(--ease-out);
+      transition: border-color 0.3s var(--ease-fluid), box-shadow 0.35s var(--ease-out);
     }
-    .card.is-in:hover,
-    .card.is-in:active,
-    .program details.is-in:hover,
-    .program details.is-in:active {
-      transform: scale(1.02);
-      border-color: rgba(255, 255, 255, 0.18);
-      box-shadow: 0 12px 28px rgba(0, 0, 0, 0.22);
+    @media (hover: hover) and (pointer: fine) {
+      .card.is-in:hover,
+      .program details.is-in:hover {
+        border-color: rgba(255, 255, 255, 0.18);
+        box-shadow: 0 12px 28px rgba(0, 0, 0, 0.22);
+      }
+      .btn:hover { transform: scale(1.02); }
     }
     .icon {
       width: 44px;
@@ -520,7 +545,7 @@
       border: 1px solid rgba(255, 255, 255, 0.12);
       border-radius: 20px;
       overflow: hidden;
-      transition: transform 0.35s var(--ease-out), border-color 0.3s var(--ease-fluid), box-shadow 0.35s var(--ease-out);
+      transition: border-color 0.3s var(--ease-fluid), box-shadow 0.35s var(--ease-out);
     }
     .program summary {
       display: flex;
@@ -637,12 +662,9 @@
     }
 
     .reveal {
-      opacity: 0;
-      transform: translateY(40px);
-      transition: opacity 0.85s var(--ease-out), transform 0.85s var(--ease-out);
-      transition-delay: var(--d, 0ms);
+      opacity: 1;
+      transform: none;
     }
-    .reveal.is-in { opacity: 1; transform: translateY(0); }
 
     dialog {
       width: min(32rem, calc(100% - 2rem));
@@ -661,7 +683,7 @@
     }
     @media (min-width: 768px) {
       .nav-links { display: flex; }
-      .hero { min-height: calc(100dvh - 4.8rem); padding: 5.5rem 0 5rem; }
+      .hero { min-height: calc(100svh - 4.8rem); padding: 5.5rem 0 5rem; }
       .cta-block { padding: 4rem 3rem; }
       .cases { grid-template-columns: 1fr 1fr; }
       .program details p { padding-left: 4.05rem; }
@@ -734,6 +756,8 @@
     </section>
 
     <aside class="ticker" aria-label="Котировки рынка">
+      <p class="ticker-note">(пробный сайт)</p>
+      <div class="ticker-mask">
       <div class="ticker-track" id="ticker-track">
         <span class="ticker-item"><span class="pair">BTC/USDT</span><span class="px">108,452.10</span><span class="chg up">+1.24%</span></span>
         <span class="ticker-item"><span class="pair">ETH/USDT</span><span class="px">4,281.55</span><span class="chg up">+0.86%</span></span>
@@ -747,6 +771,7 @@
         <span class="ticker-item"><span class="pair">BTC/USDT</span><span class="px">108,452.10</span><span class="chg up">+1.24%</span></span>
         <span class="ticker-item"><span class="pair">ETH/USDT</span><span class="px">4,281.55</span><span class="chg up">+0.86%</span></span>
         <span class="ticker-item"><span class="pair">SOL/USDT</span><span class="px">178.42</span><span class="chg down">-0.41%</span></span>
+      </div>
       </div>
     </aside>
 
